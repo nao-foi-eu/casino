@@ -464,3 +464,160 @@ header h1 {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(149, 165, 166, 0.5);
 }
+
+/* Modal Cara ou Coroa */
+.cara-coroa-content {
+    max-width: 600px;
+    border: 3px solid #ffd700;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+}
+
+.proposta-texto {
+    font-size: 1.3em;
+    color: #ffd700;
+    margin: 15px 0;
+}
+
+.proposta-descricao {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+.recompensas {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+}
+
+.recompensa-ganhar, .recompensa-perder {
+    text-align: center;
+    flex: 1;
+}
+
+.emoji-grande {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.recompensa-ganhar h3 {
+    color: #2ecc71;
+    margin: 10px 0;
+}
+
+.recompensa-perder h3 {
+    color: #e74c3c;
+    margin: 10px 0;
+}
+
+.valor-recompensa {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2ecc71;
+    margin-top: 10px;
+}
+
+.valor-penalidade {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-top: 10px;
+}
+
+.vs {
+    font-size: 2em;
+    font-weight: bold;
+    color: #ffd700;
+    padding: 0 20px;
+}
+
+.aviso-aposta {
+    color: #f39c12;
+    font-weight: bold;
+    margin: 15px 0;
+    font-size: 1.1em;
+}
+
+.botoes-cara-coroa {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.btn-escolha {
+    flex: 1;
+    padding: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: 3px solid #fff;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: linear-gradient(145deg, #3498db, #2980b9);
+    color: white;
+}
+
+.btn-escolha:hover {
+    transform: scale(1.05) rotate(-2deg);
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.6);
+}
+
+.btn-cara:hover {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+    box-shadow: 0 10px 30px rgba(231, 76, 60, 0.6);
+}
+
+.btn-coroa:hover {
+    background: linear-gradient(145deg, #9b59b6, #8e44ad);
+    box-shadow: 0 10px 30px rgba(155, 89, 182, 0.6);
+}
+
+.moeda {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    animation: flipCoin 1s infinite;
+}
+
+@keyframes flipCoin {
+    0%, 100% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+}
+
+.btn-recusar {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    font-weight: bold;
+    background: linear-gradient(145deg, #95a5a6, #7f8c8d);
+    color: white;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s;
+}
+
+.btn-recusar:hover {
+    background: linear-gradient(145deg, #e74c3c, #c0392b);
+    transform: scale(1.02);
+}
+
+/* Animação de resultado */
+.resultado-cara-coroa {
+    animation: zoomIn 0.5s;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

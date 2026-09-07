@@ -179,5 +179,43 @@
     </div>
 
     <script src="script.js"></script>
+    
+        <!-- Modal Cara ou Coroa -->
+    <div class="modal" id="caraCoroaModal">
+        <div class="modal-content cara-coroa-content">
+            <h2>🎲 PROPOSTA ESPECIAL! 🎲</h2>
+            <p class="proposta-texto">Você atingiu <strong>$10,000</strong>!</p>
+            <p class="proposta-descricao">Aceite o desafio <strong>CARA OU COROA</strong>:</p>
+            
+            <div class="recompensas">
+                <div class="recompensa-ganhar">
+                    <div class="emoji-grande">💰</div>
+                    <h3>SE GANHAR:</h3>
+                    <p class="valor-recompensa">+$20,000 BÔNUS!</p>
+                </div>
+                <div class="vs">VS</div>
+                <div class="recompensa-perder">
+                    <div class="emoji-grande">😢</div>
+                    <h3>SE PERDER:</h3>
+                    <p class="valor-penalidade">Fica com apenas $50</p>
+                </div>
+            </div>
+            
+            <p class="aviso-aposta">Esta é sua única chance!</p>
+            
+            <div class="botoes-cara-coroa">
+                <button class="btn-escolha btn-cara" onclick="jogarCaraCoroa('cara')">
+                    <div class="moeda">🪙</div>
+                    <div>CARA</div>
+                </button>
+                <button class="btn-escolha btn-coroa" onclick="jogarCaraCoroa('coroa')">
+                    <div class="moeda">🪙</div>
+                    <div>COROA</div>
+                </button>
+            </div>
+            
+            <button class="btn-recusar" onclick="recusarProposta()">❌ RECUSAR PROPOSTA</button>
+        </div>
+    </div>
 </body>
 </html>

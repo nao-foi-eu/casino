@@ -4,6 +4,7 @@ let custoJogada = 50;
 let bonusAtivo = false;
 let gameOver = false;
 let girando = false;
+let propostaAceita = false;
 
 // Símbolos e valores
 const simbolos = ['🍒', '🍋', '🍊', '💎', '⭐', '🎰', '👑'];
@@ -160,7 +161,60 @@ function finalizarGiros() {
         }
     }
     
-    processarResultado();
+function processarResultado() {
+    const { ganho, combinacoes } = verificarVitoria();
+    
+    if (ganho > 0) {
+        dinheiro += ganho;
+        totalGanho += ganho;
+        sequenciaVitorias++;
+        jackpotPool += Math.floor(aplicarDesconto() / 2);
+        
+        let msg = `🎉 VOCÊ GANHOU $${ganho}!`;
+        if (combinacoes.length > 0) {
+            msg += `\n${combinacoes[0]}`;
+        }
+        mostrarMensagem(msg, 'win');
+        
+        // Chance de bônus
+        if (chanceBonus()) {
+            ativarBonus();
+        }
+        
+        // VERIFICAR SE ATINGIU $10,000
+        verificarPropostaCaraCoroa();
+        
+    } else {
+        sequenciaVitorias = 0;
+        bonusMultiplier = 1;
+        bonusAtivo = false;
+        
+        mostrarMensagem('😢 Não foi dessa vez...', 'lose');
+        
+        // Verificar segunda chance
+        if (habilidades.segunda_chance.disponivel && habilidades.segunda_chance.cooldown === 0) {
+            setTimeout(() => {
+                mostrarMensagem('⚡ Usando SEGUNDA CHANCE!', 'bonus');
+                habilidades.segunda_chance.disponivel = false;
+                habilidades.segunda_chance.cooldown = habilidades.segunda_chance.maxCooldown;
+                atualizarInterface();
+                setTimeout(() => jogar(), 1500);
+            }, 1000);
+            girando = false;
+            document.getElementById('btnJogar').disabled = false;
+            return;
+        }
+    }
+    
+    atualizarInterface();
+    girando = false;
+    document.getElementById('btnJogar').disabled = false;
+    
+    // Verificar game over
+    if (dinheiro <= 0) {
+        setTimeout(gameOverFalencia, 1000);
+    }
+}
 }
 
 function escolherComPeso(opcoes, pesos) {
@@ -381,6 +435,7 @@ function reiniciarJogo() {
     bonusAtivo = false;
     gameOver = false;
     girando = false;
+    propostaAceita = false; // RESETAR ESTA VARIÁVEL
     
     rolos = [
         ['❓', '❓', '❓'],
@@ -414,6 +469,7 @@ function reiniciarJogo() {
     }
     
     document.getElementById('gameOverModal').classList.remove('active');
+    document.getElementById('caraCoroaModal').classList.remove('active'); // FECHAR MODAL CARA OU COROA
     document.getElementById('btnJogar').disabled = false;
     document.getElementById('mensagem').textContent = '';
     document.getElementById('mensagem').className = 'mensagem';
@@ -445,4 +501,65 @@ function declararFalencia() {
     setTimeout(() => {
         gameOverFalencia();
     }, 1500);
+}
+
+function verificarPropostaCaraCoroa() {
+    // Verifica se atingiu $10,000 e ainda não aceitou/recusou a proposta
+    if (dinheiro >= 10000 && !propostaAceita && !gameOver) {
+        mostrarModalCaraCoroa();
+    }
+}
+
+function mostrarModalCaraCoroa() {
+    document.getElementById('caraCoroaModal').classList.add('active');
+}
+
+function jogarCaraCoroa(escolha) {
+    // Sorteia cara ou coroa (50% de chance)
+    const resultado = Math.random() < 0.5 ? 'cara' : 'coroa';
+    
+    // Fecha o modal
+    document.getElementById('caraCoroaModal').classList.remove('active');
+    
+    // Marca proposta como aceita
+    propostaAceita = true;
+    
+    if (escolha === resultado) {
+        // JOGADOR GANHOU!
+        const bonus = 20000;
+        dinheiro += bonus;
+        
+        mostrarMensagem(`🎉 PARABÉNS! Você escolheu ${escolha.toUpperCase()} e acertou! +$${bonus}`, 'win');
+        
+        // Efeito especial
+        setTimeout(() => {
+            alert(`🎊 INCRÍVEL! 🎊\n\nVocê ganhou $${bonus} de bônus!\n\nSaldo atual: $${dinheiro}`);
+        }, 500);
+        
+    } else {
+        // JOGADOR PERDEU!
+        const saldoAnterior = dinheiro;
+        dinheiro = 50;
+        
+        mostrarMensagem(`😢 Que pena! Você escolheu ${escolha.toUpperCase()} mas saiu ${resultado.toUpperCase()}.`, 'lose');
+        
+        // Efeito dramático
+        setTimeout(() => {
+            alert(`💸 OH NÃO! 💸\n\nVocê perdeu quase tudo!\n\nDe $${saldoAnterior} para apenas $50\n\nSaldo atual: $${dinheiro}`);
+        }, 500);
+    }
+    
+    atualizarInterface();
+    
+    // Verificar game over se ficou com muito pouco
+    if (dinheiro <= 0) {
+        setTimeout(gameOverFalencia, 1000);
+    }
+}
+
+function recusarProposta() {
+    document.getElementById('caraCoroaModal').classList.remove('active');
+    propostaAceita = true; // Marca como aceita para não aparecer novamente
+    
+    mostrarMensagem('⚠️ Proposta recusada. Continue jogando!', 'bonus');
 }
