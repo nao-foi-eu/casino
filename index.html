@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Super Caça-Níqueis</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎰 SUPER CAÇA-NÍQUEIS 🎰</h1>
+        </header>
+
+        <!-- Painel de Status -->
+        <div class="status-panel">
+            <div class="stat-item">
+                <span class="stat-icon">💰</span>
+                <span class="stat-label">Dinheiro:</span>
+                <span class="stat-value" id="dinheiro">$1000</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">💵</span>
+                <span class="stat-label">Custo:</span>
+                <span class="stat-value" id="custo">$50</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">✨</span>
+                <span class="stat-label">Bônus:</span>
+                <span class="stat-value" id="bonus">x1</span>
+            </div>
+        </div>
+
+        <!-- Rolos da Máquina -->
+        <div class="slots-container">
+            <div class="slot-row" id="row-0">
+                <div class="slot" id="slot-0-0">❓</div>
+                <div class="slot" id="slot-0-1">❓</div>
+                <div class="slot" id="slot-0-2">❓</div>
+            </div>
+            <div class="slot-row" id="row-1">
+                <div class="slot" id="slot-1-0">❓</div>
+                <div class="slot" id="slot-1-1">❓</div>
+                <div class="slot" id="slot-1-2">❓</div>
+            </div>
+            <div class="slot-row" id="row-2">
+                <div class="slot" id="slot-2-0">❓</div>
+                <div class="slot" id="slot-2-1">❓</div>
+                <div class="slot" id="slot-2-2">❓</div>
+            </div>
+        </div>
+
+        <!-- Botão Jogar -->
+        <button class="btn-jogar" id="btnJogar" onclick="jogar()">
+            🎲 JOGAR
+        </button>
+
+        <!-- Mensagem -->
+        <div class="mensagem" id="mensagem"></div>
+
+        <!-- Controles -->
+        <div class="controls">
+            <!-- Upgrades -->
+            <div class="panel">
+                <h3>⚡ UPGRADES</h3>
+                <div class="upgrade-list">
+                    <button class="btn-upgrade" onclick="comprarUpgrade('multiplicador')">
+                        <div>Multiplicador Lv.<span id="lvl-multiplicador">1</span></div>
+                        <div class="upgrade-custo">$<span id="custo-multiplicador">200</span></div>
+                    </button>
+                    <button class="btn-upgrade" onclick="comprarUpgrade('bonus_chance')">
+                        <div>Chance Bônus Lv.<span id="lvl-bonus_chance">1</span></div>
+                        <div class="upgrade-custo">$<span id="custo-bonus_chance">300</span></div>
+                    </button>
+                    <button class="btn-upgrade" onclick="comprarUpgrade('desconto')">
+                        <div>Desconto Lv.<span id="lvl-desconto">1</span></div>
+                        <div class="upgrade-custo">$<span id="custo-desconto">250</span></div>
+                    </button>
+                    <button class="btn-upgrade" onclick="comprarUpgrade('jackpot')">
+                        <div>Jackpot Lv.<span id="lvl-jackpot">1</span></div>
+                        <div class="upgrade-custo">$<span id="custo-jackpot">500</span></div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Habilidades -->
+            <div class="panel">
+                <h3>🔥 HABILIDADES</h3>
+                <div class="habilidade-list">
+                    <button class="btn-habilidade" id="hab-segunda_chance" onclick="usarHabilidade('segunda_chance')">
+                        <div>⚡ 2ª Chance</div>
+                        <div class="habilidade-status" id="status-segunda_chance">PRONTO</div>
+                    </button>
+                    <button class="btn-habilidade" id="hab-dobrar_ganhos" onclick="usarHabilidade('dobrar_ganhos')">
+                        <div>💰 Dobrar Ganhos</div>
+                        <div class="habilidade-status" id="status-dobrar_ganhos">PRONTO</div>
+                    </button>
+                    <button class="btn-habilidade" id="hab-giro_gratis" onclick="usarHabilidade('giro_gratis')">
+                        <div>🎁 Giro Grátis</div>
+                        <div class="habilidade-status" id="status-giro_gratis">PRONTO</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="stats-extra">
+            <div class="stat-box">
+                <div class="stat-label">🎰 Jackpot</div>
+                <div class="stat-value" id="jackpot">$1000</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">🔥 Sequência</div>
+                <div class="stat-value" id="sequencia">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">💵 Total Ganho</div>
+                <div class="stat-value" id="totalGanho">$0</div>
+            </div>
+        </div>
+
+        <!-- Botão Declarar Falência -->
+        <button class="btn-falencia" onclick="confirmarFalencia()">
+            💸 DECLARAR FALÊNCIA
+        </button>
+
+        <!-- Como Jogar -->
+        <div class="info-section">
+            <details>
+                <summary>📖 Como Jogar</summary>
+                <div class="info-content">
+                    <h4>🎯 Objetivo</h4>
+                    <p>Ganhe dinheiro formando combinações de símbolos iguais!</p>
+                    
+                    <h4>💎 Valores dos Símbolos</h4>
+                    <ul>
+                        <li>🍒 = $20</li>
+                        <li>🍋 = $30</li>
+                        <li>🍊 = $40</li>
+                        <li>💎 = $100</li>
+                        <li>⭐ = $150</li>
+                        <li>🎰 = $200</li>
+                        <li>👑 = $500</li>
+                    </ul>
+                    
+                    <h4>⚠️ Cuidado</h4>
+                    <p>Se seu dinheiro chegar a $0, é GAME OVER!</p>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <!-- Modal Game Over -->
+    <div class="modal" id="gameOverModal">
+        <div class="modal-content">
+            <h2>💸 GAME OVER - FALÊNCIA! 💸</h2>
+            <div class="final-stats">
+                <p>📊 <strong>Estatísticas Finais:</strong></p>
+                <p>Total Ganho: <span id="finalTotalGanho">$0</span></p>
+                <p>Melhor Sequência: <span id="finalSequencia">0</span> vitórias</p>
+                <p>Jackpot Acumulado: <span id="finalJackpot">$1000</span></p>
+            </div>
+            <p>Você perdeu todo o seu dinheiro! 😢</p>
+            <button class="btn-reiniciar" onclick="reiniciarJogo()">🔄 JOGAR NOVAMENTE</button>
+        </div>
+    </div>
+
+    <!-- Modal Confirmação de Falência -->
+    <div class="modal" id="confirmacaoFalenciaModal">
+        <div class="modal-content">
+            <h2>⚠️ CONFIRMAR FALÊNCIA</h2>
+            <p>Tem certeza que deseja declarar falência?</p>
+            <p class="aviso-falencia">Esta ação não pode ser desfeita!</p>
+            <div class="botoes-confirmacao">
+                <button class="btn-confirmar" onclick="declararFalencia()">✅ SIM, DECLARAR</button>
+                <button class="btn-cancelar" onclick="fecharModalConfirmacao()">❌ CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
