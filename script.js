@@ -161,60 +161,8 @@ function finalizarGiros() {
         }
     }
     
-function processarResultado() {
-    const { ganho, combinacoes } = verificarVitoria();
-    
-    if (ganho > 0) {
-        dinheiro += ganho;
-        totalGanho += ganho;
-        sequenciaVitorias++;
-        jackpotPool += Math.floor(aplicarDesconto() / 2);
-        
-        let msg = `🎉 VOCÊ GANHOU $${ganho}!`;
-        if (combinacoes.length > 0) {
-            msg += `\n${combinacoes[0]}`;
-        }
-        mostrarMensagem(msg, 'win');
-        
-        // Chance de bônus
-        if (chanceBonus()) {
-            ativarBonus();
-        }
-        
-        // VERIFICAR SE ATINGIU $10,000
-        verificarPropostaCaraCoroa();
-        
-    } else {
-        sequenciaVitorias = 0;
-        bonusMultiplier = 1;
-        bonusAtivo = false;
-        
-        mostrarMensagem('😢 Não foi dessa vez...', 'lose');
-        
-        // Verificar segunda chance
-        if (habilidades.segunda_chance.disponivel && habilidades.segunda_chance.cooldown === 0) {
-            setTimeout(() => {
-                mostrarMensagem('⚡ Usando SEGUNDA CHANCE!', 'bonus');
-                habilidades.segunda_chance.disponivel = false;
-                habilidades.segunda_chance.cooldown = habilidades.segunda_chance.maxCooldown;
-                atualizarInterface();
-                setTimeout(() => jogar(), 1500);
-            }, 1000);
-            girando = false;
-            document.getElementById('btnJogar').disabled = false;
-            return;
-        }
-    }
-    
-    atualizarInterface();
-    girando = false;
-    document.getElementById('btnJogar').disabled = false;
-    
-    // Verificar game over
-    if (dinheiro <= 0) {
-        setTimeout(gameOverFalencia, 1000);
-    }
-}
+    // Chamar processamento do resultado
+    processarResultado();
 }
 
 function escolherComPeso(opcoes, pesos) {
@@ -249,6 +197,10 @@ function processarResultado() {
         if (chanceBonus()) {
             ativarBonus();
         }
+        
+        // VERIFICAR SE ATINGIU $10,000
+        verificarPropostaCaraCoroa();
+        
     } else {
         sequenciaVitorias = 0;
         bonusMultiplier = 1;
@@ -435,7 +387,7 @@ function reiniciarJogo() {
     bonusAtivo = false;
     gameOver = false;
     girando = false;
-    propostaAceita = false; // RESETAR ESTA VARIÁVEL
+    propostaAceita = false;
     
     rolos = [
         ['❓', '❓', '❓'],
@@ -469,7 +421,8 @@ function reiniciarJogo() {
     }
     
     document.getElementById('gameOverModal').classList.remove('active');
-    document.getElementById('caraCoroaModal').classList.remove('active'); // FECHAR MODAL CARA OU COROA
+    document.getElementById('caraCoroaModal').classList.remove('active');
+    document.getElementById('confirmacaoFalenciaModal').classList.remove('active');
     document.getElementById('btnJogar').disabled = false;
     document.getElementById('mensagem').textContent = '';
     document.getElementById('mensagem').className = 'mensagem';
